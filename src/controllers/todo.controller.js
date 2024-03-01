@@ -8,10 +8,17 @@ export const createTodo = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
   const { title } = data;
-  const { todos } = await User.findById(userId).populate("todos.todoId");
-  const duplicateTodo = todos.find((todo) => todo.todoId.title === title);
 
-  if (duplicateTodo) {
+  const user = await User.findById(userId);
+
+  const todoIds = user.todos.map((todo) => todo.todoId);
+
+  const existingTodo = await Todo.findOne({
+    title,
+    _id: { $in: todoIds },
+  });
+
+  if (existingTodo) {
     throw new CustomError("Todo name already exists", 400);
   }
 
