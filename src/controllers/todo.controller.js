@@ -283,7 +283,6 @@ export const updateProfile = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword, name } = req.body;
   const user = await User.findById(req.user._id);
   if (!oldPassword && !newPassword) {
-    user.password = newPassword;
     user.name = name;
     await user.save();
     return;
