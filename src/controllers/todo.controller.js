@@ -282,6 +282,13 @@ export const deleteTodo = asyncHandler(async (req, res) => {
 export const updateProfile = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword, name } = req.body;
 
+  if (!oldPassword && !newPassword) {
+    user.password = newPassword;
+    user.name = name;
+    await user.save();
+    return;
+  }
+
   const user = await User.findById(req.user._id);
   if (!(await await user.comparePassword(oldPassword))) {
     throw new CustomError("Old Password Not Matched");
