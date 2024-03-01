@@ -281,7 +281,7 @@ export const deleteTodo = asyncHandler(async (req, res) => {
 
 export const updateProfile = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword, name } = req.body;
-
+  const user = await User.findById(req.user._id);
   if (!oldPassword && !newPassword) {
     user.password = newPassword;
     user.name = name;
@@ -291,7 +291,7 @@ export const updateProfile = asyncHandler(async (req, res) => {
   if (!newPassword) {
     throw new CustomError(" New password cann't Empty");
   }
-  const user = await User.findById(req.user._id);
+
   if (!(await await user.comparePassword(oldPassword))) {
     throw new CustomError("Old Password Not Matched");
   }
