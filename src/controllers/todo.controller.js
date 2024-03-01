@@ -285,6 +285,9 @@ export const updateProfile = asyncHandler(async (req, res) => {
   if (!oldPassword && !newPassword) {
     user.name = name;
     await user.save();
+    res
+      .status(200)
+      .json({ success: true, message: "Name Changed Successfully" });
     return;
   }
   if (!newPassword) {
